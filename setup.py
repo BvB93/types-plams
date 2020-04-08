@@ -1,4 +1,5 @@
 import sys
+from os.path import join
 from setuptools import setup, find_packages
 
 packages = ['scm-stubs.plams'] + [f'scm-stubs.plams.{i}' for i in find_packages('.')]
@@ -15,5 +16,5 @@ setup(
     install_requires=install_requires,
     packages=packages,
     package_dir={'scm-stubs.plams': '.'},
-    package_data={'scm-stubs.plams': ['py.typed', '*.pyi']},
+    package_data={'scm-stubs.plams': ['py.typed', '*.pyi', join('mol', '*.pyi')]},
 )
