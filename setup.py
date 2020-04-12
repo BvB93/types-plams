@@ -12,8 +12,9 @@ setup(
     python_requires='>=3.6',
     install_requires=install_requires,
     packages=[
-        'scm.plams',
-        'scm.plams.molecule'
+        'scm-stubs',
+        'scm-stubs.plams',
+        'scm-stubs.plams.molecule'
     ],
     package_dir={'scm-stubs.plams': '.'},
     package_data={'scm-stubs': ['py.typed', '*.pyi']},
