@@ -1,8 +1,10 @@
+import os
 import sys
+from typing import List, Dict
 from setuptools import setup
 
 
-def find_stubs(package):
+def find_stubs(package: str) -> Dict[str, List[str]]:
     stubs = []
     for root, dirs, files in os.walk(package):
         for file in files:
