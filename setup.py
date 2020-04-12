@@ -1,6 +1,16 @@
 import sys
 from setuptools import setup
 
+
+def find_stubs(package):
+    stubs = []
+    for root, dirs, files in os.walk(package):
+        for file in files:
+            path = os.path.join(root, file).replace(package + os.sep, '', 1)
+            stubs.append(path)
+    return {package: stubs}
+
+
 install_requires = ['numpy', 'plams']
 if sys.version_info < (3, 8):
     install_requires.append('typing_extensions')
@@ -12,10 +22,7 @@ setup(
     python_requires='>=3.6',
     install_requires=install_requires,
     packages=[
-        'scm-stubs',
-        'scm-stubs.plams',
-        'scm-stubs.plams.molecule'
+        'scm-stubs'
     ],
-    package_dir={'scm-stubs.plams': '.'},
-    package_data={'scm-stubs': ['py.typed', '*.pyi']},
+    package_data=find_stubs('scm-stubs')
 )
