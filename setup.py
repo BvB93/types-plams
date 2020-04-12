@@ -1,9 +1,5 @@
 import sys
-from os.path import join
-from setuptools import setup, find_packages
-
-packages = ['scm-stubs', 'scm-stubs.plams']
-packages += [f'scm-stubs.plams.{i}' for i in find_packages('.') if not i.startswith('scm-stubs')]
+from setuptools import setup
 
 install_requires = ['numpy', 'plams']
 if sys.version_info < (3, 8):
@@ -15,7 +11,10 @@ setup(
     license='LGPLv3',
     python_requires='>=3.6',
     install_requires=install_requires,
-    packages=packages,
+    packages=[
+        'scm.plams',
+        'scm.plams.molecule'
+    ],
     package_dir={'scm-stubs.plams': '.'},
-    package_data={'scm-stubs.plams': ['py.typed', '*.pyi', join('mol', '*.pyi')]},
+    package_data={'scm-stubs': ['py.typed', '*.pyi']},
 )
