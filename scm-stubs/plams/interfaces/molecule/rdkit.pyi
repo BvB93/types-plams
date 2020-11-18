@@ -35,7 +35,7 @@ def to_rdmol(
     assignChirality: bool = ...,
 ) -> Mol: ...
 @overload
-def from_smiles(
+def from_smiles(  # type: ignore[misc]
     smiles: str,
     nconfs: Literal[1] = ...,
     name: Optional[str] = ...,
@@ -51,7 +51,7 @@ def from_smiles(
     rms: float = ...,
 ) -> List[Molecule]: ...
 @overload
-def from_smarts(
+def from_smarts(  # type: ignore[misc]
     smarts: str,
     nconfs: Literal[1] = ...,
     name: Optional[str] = ...,
@@ -67,7 +67,7 @@ def from_smarts(
     rms: float = ...,
 ) -> List[Molecule]: ...
 @overload
-def get_conformations(
+def get_conformations(  # type: ignore[misc]
     mol: Union[Mol, Molecule],
     nconfs: Literal[1] = ...,
     name: Optional[str] = ...,
@@ -85,7 +85,7 @@ def get_conformations(
     enforceChirality: bool = False,
 ) -> List[Molecule]: ...
 @overload
-def from_sequence(
+def from_sequence(  # type: ignore[misc]
     sequence: str,
     nconfs: Literal[1] = ...,
     name: Optional[str] = ...,

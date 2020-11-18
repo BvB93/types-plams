@@ -1,6 +1,8 @@
 import sys
 from os import PathLike
-from typing import OrderedDict, Union, List, Tuple, Generator, Set, Any
+from typing import Dict, Union, List, Tuple, Generator, Set, Any, Optional, overload
+
+import numpy as np
 
 if sys.version_info >= (3, 8):
     from typing import Literal
@@ -20,7 +22,7 @@ class KFReader:
 class KFFile:
     autosave: bool
     path: str
-    tmpdat: OrderedDict[str, OrderedDict[str, Any]]
+    tmpdat: Dict[str, Dict[str, Any]]
     reader: Optional[KFReader]
     def __init__(self, path: Union[str, PathLike[str]], autosave: bool = ...) -> None: ...
     @overload

@@ -1,4 +1,4 @@
-from typing import List, Any, IO
+from typing import List, Any, IO, Union, Dict
 
 class PDBRecord:
     name: str

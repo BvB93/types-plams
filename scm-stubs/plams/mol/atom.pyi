@@ -8,8 +8,11 @@ from typing import (
     Mapping,
     Iterator,
     Sequence,
+    Union,
 )
-from scm.plams import Bond, Molecule, Settings, Any
+from scm.plams import Bond, Molecule, Settings
+
+import numpy as np
 
 class Atom:
     atnum: int

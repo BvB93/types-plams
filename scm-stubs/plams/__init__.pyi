@@ -1,6 +1,7 @@
 from typing import List
 
 from scm.plams.core.basejob import (
+    Job as Job,
     SingleJob as SingleJob,
     MultiJob as MultiJob,
 )
@@ -41,6 +42,10 @@ from scm.plams.mol.pdbtools import (
     PDBHandler as PDBHandler,
 )
 
+from scm.plams.interfaces.adfsuite.ams import (
+    AMSJob as AMSJob,
+    AMSResults as AMSResults,
+)
 from scm.plams.interfaces.molecule.ase import (
     fromASE as fromASE,
     toASE as toASE,
