@@ -65,5 +65,16 @@ from scm.plams.interfaces.molecule.rdkit import (
     yield_coords as yield_coords,
 )
 
+from scm.plams.tools.units import Units
+from scm.plams.tools.periodictable import (
+    PeriodicTable as PeriodicTable,
+    PT as PT,
+)
+from scm.plams.tools.kftools import (
+    KFReader as KFReader,
+    KFFile as KFFile,
+    KFHistory as KFHistory,
+)
+
 __all__: List[str]
 __version__: str

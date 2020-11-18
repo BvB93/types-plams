@@ -1,3 +1,5 @@
+import sys
+
 from types import TracebackType
 from typing import (
     TypeVar,
@@ -13,9 +15,17 @@ from typing import (
     Optional,
 )
 
+if sys.version_info >= (3, 8):
+    from typing import Protocol
+else:
+    from typing_extensions import Protocol
+
+class SupportsMissing(Protocol):
+    def __missing__(self, __key: Any) -> Any: ...
+
 KT = TypeVar("KT")
 VT = TypeVar("VT")
-T = TypeVar("T")
+T = TypeVar("T", bound=SupportsMissing)
 ST = TypeVar("ST", bound=Settings)
 
 class Settings(Dict[KT, VT]):
