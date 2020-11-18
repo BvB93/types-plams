@@ -122,20 +122,20 @@ def apply_reaction_smarts(
 def gen_coords_rdmol(rdmol: Mol) -> List[int]: ...
 @overload
 def readpdb(
-    pdb_file: Union[str, bytes, PathLike[Any], IO[str]],
+    pdb_file: Union[str, PathLike[str], IO[str]],
     removeHs: bool = ...,
     proximityBonding: bool = ...,
     return_rdmol: Literal[False] = ...,
 ) -> Molecule: ...
 @overload
 def readpdb(
-    pdb_file: Union[str, bytes, PathLike[Any], IO[str]],
+    pdb_file: Union[str, PathLike[str], IO[str]],
     removeHs: bool = ...,
     proximityBonding: bool = ...,
     return_rdmol: Literal[True] = ...,
 ) -> Mol: ...
 def writepdb(
-    mol: Union[Mol, Molecule], pdb_file: Union[str, bytes, PathLike[Any], IO[str]]
+    mol: Union[Mol, Molecule], pdb_file: Union[str, PathLike[str], IO[str]]
 ) -> None: ...
 @overload
 def add_Hs(
