@@ -9,6 +9,7 @@ from typing import (
     Iterator,
     Sequence,
     Union,
+    SupportsFloat,
 )
 from scm.plams import Bond, Molecule, Settings
 
@@ -20,11 +21,12 @@ class Atom:
     bonds: List[Bond]
     properties: Settings[Any, Any]
     coords: Tuple[float, float, float]
+    id: int  # Only available after calling `Molecule.set_atoms_id`
     def __init__(
         self,
         atnum: int = ...,
         symbol: Optional[str] = ...,
-        coords: Optional[Tuple[float, float, float]] = ...,
+        coords: Optional[Iterable[Union[str, bytes, SupportsFloat]]] = ...,
         unit: str = ...,
         bonds: Optional[List[Bond]] = ...,
         mol: Optional[Molecule] = ...,
