@@ -46,6 +46,23 @@ from scm.plams.interfaces.adfsuite.ams import (
     AMSJob as AMSJob,
     AMSResults as AMSResults,
 )
+from scm.plams.interfaces.adfsuite.scmjob import (
+    SCMJob as SCMJob,
+    SCMResults as SCMResults,
+)
+from scm.plams.interfaces.adfsuite.crs import (
+    CRSJob as CRSJob,
+    CRSResults as CRSResults,
+)
+from scm.plams.interfaces.adfsuite.cp2k import (
+    Cp2kJob as Cp2kJob,
+    Cp2kResults as Cp2kResults,
+    Cp2kSettings2Mol as Cp2kSettings2Mol,
+)
+from scm.plams.interfaces.adfsuite.adf import (
+    ADFJob as ADFJob,
+    ADFResults as ADFResults,
+)
 from scm.plams.interfaces.molecule.ase import (
     fromASE as fromASE,
     toASE as toASE,
