@@ -70,7 +70,7 @@ from scm.plams.interfaces.molecule.rdkit import (
     yield_coords as yield_coords,
 )
 
-from scm.plams.tools.units import Units
+from scm.plams.tools.units import Units as Units
 from scm.plams.tools.periodictable import (
     PeriodicTable as PeriodicTable,
     PT as PT,
