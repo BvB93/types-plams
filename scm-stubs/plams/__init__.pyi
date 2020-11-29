@@ -99,4 +99,5 @@ from scm.plams.tools.kftools import (
 )
 
 __all__: List[str]
-__version__: str
+__version__: float
+__path__: List[str]
