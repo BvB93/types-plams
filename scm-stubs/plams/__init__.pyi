@@ -106,6 +106,9 @@ from scm.plams.tools.kftools import (
     KFHistory as KFHistory,
 )
 
+from scm.plams.recipes.ams_crs import run_crs_ams as run_crs_ams
+from scm.plams.recipes.global_minimum import global_minimum as global_minimum
+
 __all__: List[str]
 __version__: float
 __path__: List[str]
