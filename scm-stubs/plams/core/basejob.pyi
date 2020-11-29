@@ -22,18 +22,18 @@ class Job(metaclass=ABCMeta):
     name: str
     jobmanager: None
     parent: None
-    settings: Settings
-    default_settings: List[Settings]
+    settings: Settings[str, Any]
+    default_settings: List[Settings[str, Any]]
     depend: List[Job]
     def __init__(
         self,
         name: str = ...,
-        settings: Union[None, Settings, Job] = ...,
+        settings: Union[None, Settings[str, Any], Job] = ...,
         depend: Optional[List[Job]] = ...,
     ) -> None: ...
     def run(
         self,
-        jobrunner: Optional[JobRunner] = ...,
+        jobrunner: Optional[JobRunner[Any]] = ...,
         jobmanager: Optional[JobManager] = ...,
         **kwargs: Any,
     ) -> Results: ...
@@ -53,7 +53,7 @@ class SingleJob(Job, metaclass=ABCMeta):
         molecule: Optional[Molecule] = ...,
         *,
         name: str = ...,
-        settings: Union[None, Settings, Job] = ...,
+        settings: Union[None, Settings[str, Any], Job] = ...,
         depend: Optional[List[Job]] = ...
     ) -> None: ...
     @abstractmethod
@@ -69,21 +69,21 @@ class SingleJob(Job, metaclass=ABCMeta):
     def load_external(
         cls,
         path: Union[str, PathLike[str]],
-        settings: Optional[Settings] = ...,
+        settings: Optional[Settings[str, Any]] = ...,
         molecule: Optional[Molecule] = ...,
         finalize: bool = ...,
     ) -> Job: ...
 
 class MultiJob(Job, Generic[JT]):
     children: Collection[JT]
-    childrunner: Optional[JobRunner]
+    childrunner: Optional[JobRunner[Any]]
     def __init__(
         self,
         children: Optional[Collection[JT]] = ...,
-        childrunner: Optional[JobRunner] = ...,
+        childrunner: Optional[JobRunner[Any]] = ...,
         *,
         name: str = ...,
-        settings: Union[None, Settings, Job] = ...,
+        settings: Union[None, Settings[str, Any], Job] = ...,
         depend: Optional[List[Job]] = ...
     ) -> None: ...
     def new_children(self) -> None: ...

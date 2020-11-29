@@ -1,6 +1,6 @@
 import sys
 from os import PathLike
-from typing import Dict, Union, List, Tuple, Generator, Set, Any, Optional, overload
+from typing import Dict, Union, List, Tuple, Generator, Set, Any, Optional, overload, Generic, TypeVar
 
 import numpy as np
 
@@ -9,13 +9,15 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Literal
 
+PT = TypeVar("PT", str, bytes, PathLike[str], PathLike[bytes])
+ST = TypeVar("ST", bound=str)
 Scalar = Union[bool, int, float, str]
 
-class KFReader:
+class KFReader(Generic[PT]):
     endian: Literal["<", ">"]
     word: Literal["i", "q"]
-    path: str
-    def __init__(self, path: Union[str, PathLike[str]], blocksize: int = ..., autodetect: bool = ...) -> None: ...
+    path: PT
+    def __init__(self, path: PT, blocksize: int = ..., autodetect: bool = ...) -> None: ...
     def read(self, section: str, variable: str) -> Any: ...
     def __iter__(self) -> Generator[Tuple[str, str], None, None]: ...
 
@@ -23,7 +25,7 @@ class KFFile:
     autosave: bool
     path: str
     tmpdat: Dict[str, Dict[str, Any]]
-    reader: Optional[KFReader]
+    reader: Optional[KFReader[str]]
     def __init__(self, path: Union[str, PathLike[str]], autosave: bool = ...) -> None: ...
     @overload
     def read(self, section: str, variable: str, return_as_list: Literal[False] = ...) -> Any: ...
@@ -40,14 +42,14 @@ class KFFile:
     def __iter__(self) -> Generator[Tuple[str, str], None, None]: ...
     def __contains__(self, arg: Union[str, Tuple[str, str]]) -> bool: ...
 
-class KFHistory:
-    kf: KFReader
+class KFHistory(Generic[PT, ST]):
+    kf: KFReader[PT]
     section: str
     nsteps: int
     shapes: Dict[str, Tuple[int, ...]]
     blocked: Set[str]
     nblocks: int
-    def __init__(self, kf: KFReader, section: str) -> None: ...
+    def __init__(self, kf: KFReader[PT], section: ST) -> None: ...
     def read_all(self, name: str) -> np.ndarray: ...
     def iter(self, name: str) -> Generator[Any, None, None]: ...
     def iter_optional(self, name: str, default: Optional[Any] = ...) -> Any: ...

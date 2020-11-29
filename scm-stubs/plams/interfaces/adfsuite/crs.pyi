@@ -31,7 +31,7 @@ class CRSResults(SCMResults):
 class CRSJob(SCMJob):
     def run(
         self,
-        jobrunner: Optional[JobRunner] = ...,
+        jobrunner: Optional[JobRunner[Any]] = ...,
         jobmanager: Optional[JobManager] = ...,
         **kwargs: Any,
     ) -> CRSResults: ...

@@ -26,7 +26,7 @@ class SupportsMissing(Protocol):
 KT = TypeVar("KT")
 VT = TypeVar("VT")
 T = TypeVar("T", bound=SupportsMissing)
-ST = TypeVar("ST", bound=Settings)
+ST = TypeVar("ST", bound=Settings[Any, Any])
 
 class Settings(Dict[KT, VT]):
     def copy(self) -> Settings[KT, VT]: ...

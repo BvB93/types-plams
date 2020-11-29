@@ -4,7 +4,7 @@ from os import PathLike
 from scm.plams import Settings, Job
 
 class JobManager:
-    settings: Settings
+    settings: Settings[str, Any]
     jobs: List[Any]
     names: Dict[str, int]
     hashes: Dict[str, Any]
@@ -15,7 +15,7 @@ class JobManager:
     input: str
     def __init__(
         self,
-        settings: Settings,
+        settings: Settings[str, Any],
         path: Union[None, str, PathLike[str]] = ...,
         folder: Union[None, str, PathLike[str]] = ...,
     ) -> None: ...

@@ -40,7 +40,7 @@ class ADFResults(SCMResults):
 class ADFJob(SCMJob):
     def run(
         self,
-        jobrunner: Optional[JobRunner] = ...,
+        jobrunner: Optional[JobRunner[Any]] = ...,
         jobmanager: Optional[JobManager] = ...,
         **kwargs: Any,
     ) -> ADFResults: ...

@@ -54,7 +54,7 @@ from scm.plams.interfaces.adfsuite.crs import (
     CRSJob as CRSJob,
     CRSResults as CRSResults,
 )
-from scm.plams.interfaces.adfsuite.cp2k import (
+from scm.plams.interfaces.thirdparty.cp2k import (
     Cp2kJob as Cp2kJob,
     Cp2kResults as Cp2kResults,
     Cp2kSettings2Mol as Cp2kSettings2Mol,
