@@ -43,7 +43,16 @@ class Results(metaclass=_MetaResults):
         process: None = ...,
     ) -> List[str]: ...
     @overload
-    def get_file_chunk(self, filename: str, begin: Optional[str] = ..., end: Optional[str] = ..., match: int = ..., inc_begin: bool = ..., inc_end: bool = ..., process: Callable[[str], T] = ...) -> List[T]: ...
+    def get_file_chunk(
+        self,
+        filename: str,
+        begin: Optional[str] = ...,
+        end: Optional[str] = ...,
+        match: int = ...,
+        inc_begin: bool = ...,
+        inc_end: bool = ...,
+        process: Callable[[str], T] = ...,
+    ) -> List[T]: ...
     @overload
     def get_output_chunk(
         self,
@@ -55,7 +64,15 @@ class Results(metaclass=_MetaResults):
         process: None = ...,
     ) -> List[str]: ...
     @overload
-    def get_output_chunk(self, begin: Optional[str] = ..., end: Optional[str] = ..., match: int = ..., inc_begin: bool = ..., inc_end: bool = ..., process: Callable[[str], T] = ...) -> List[T]: ...
+    def get_output_chunk(
+        self,
+        begin: Optional[str] = ...,
+        end: Optional[str] = ...,
+        match: int = ...,
+        inc_begin: bool = ...,
+        inc_end: bool = ...,
+        process: Callable[[str], T] = ...,
+    ) -> List[T]: ...
     def recreate_molecule(self) -> Optional[Molecule]: ...
     def recreate_settings(self) -> Optional[Settings[str, Any]]: ...
     def __getitem__(self, name: str) -> str: ...

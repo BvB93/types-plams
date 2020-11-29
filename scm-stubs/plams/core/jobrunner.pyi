@@ -13,7 +13,12 @@ class JobRunner(Generic[BST], metaclass=_MetaRunner):
     semaphore: Optional[BoundedSemaphore]
     def __init__(self, parallel: bool = ..., maxjobs: int = ...) -> None: ...
     def call(
-        self, runscript: str, workdir: str, out: str, err: str, runflags: Settings[str, Any]
+        self,
+        runscript: str,
+        workdir: str,
+        out: str,
+        err: str,
+        runflags: Settings[str, Any],
     ) -> int: ...
 
 class GridRunner(JobRunner[BST]):
@@ -32,5 +37,10 @@ class GridRunner(JobRunner[BST]):
         maxjobs: int = ...,
     ) -> None: ...
     def call(
-        self, runscript: str, workdir: str, out: str, err: str, runflags: Settings[str, Any]
+        self,
+        runscript: str,
+        workdir: str,
+        out: str,
+        err: str,
+        runflags: Settings[str, Any],
     ) -> int: ...
