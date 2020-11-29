@@ -87,6 +87,14 @@ from scm.plams.interfaces.molecule.rdkit import (
     yield_coords as yield_coords,
 )
 
+from scm.plams.tools.geometry import (
+    rotation_matrix as rotation_matrix,
+    axis_rotation_matrix as axis_rotation_matrix,
+    distance_array as distance_array,
+    angle as angle,
+    dihedral as dihedral,
+    cell_shape as cell_shape,
+)
 from scm.plams.tools.units import Units as Units
 from scm.plams.tools.periodictable import (
     PeriodicTable as PeriodicTable,
