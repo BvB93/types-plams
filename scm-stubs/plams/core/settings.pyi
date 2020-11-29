@@ -2,6 +2,7 @@ import sys
 
 from types import TracebackType
 from typing import (
+    overload,
     TypeVar,
     Mapping,
     Dict,
@@ -25,7 +26,7 @@ class SupportsMissing(Protocol):
 
 KT = TypeVar("KT")
 VT = TypeVar("VT")
-T = TypeVar("T", bound=SupportsMissing)
+MT = TypeVar("MT", bound=SupportsMissing)
 ST = TypeVar("ST", bound=Settings[Any, Any])
 
 class Settings(Dict[KT, VT]):
@@ -36,7 +37,7 @@ class Settings(Dict[KT, VT]):
     def find_case(self, key: KT) -> KT: ...
     def as_dict(self) -> Dict[KT, VT]: ...
     @classmethod
-    def suppress_missing(cls: Type[T]) -> SuppressMissing[T]: ...
+    def suppress_missing(cls: Type[MT]) -> SuppressMissing[MT]: ...
     def get_nested(
         self, key_tuple: Iterable[Any], suppress_missing: bool = False
     ) -> Any: ...
@@ -45,6 +46,9 @@ class Settings(Dict[KT, VT]):
     ) -> None: ...
     def flatten(self, flatten_list: bool = ...) -> Settings[Tuple[Any, ...], Any]: ...
     def unflatten(self, unflatten_list: bool = ...) -> Settings[Any, Any]: ...
+    @overload
+    def __missing__(self: Settings[KT, Settings[Any, Any]], name: KT) -> VT: ...
+    @overload
     def __missing__(self, name: KT) -> Settings[Any, Any]: ...
     def __getattr__(self, name: KT) -> VT: ...  # type: ignore[misc]
     def __setattr__(self, name: KT, value: VT) -> None: ...  # type: ignore[misc,override]
@@ -54,10 +58,10 @@ class Settings(Dict[KT, VT]):
     def __iadd__(self: ST, other: Mapping[KT, VT]) -> ST: ...
     def __copy__(self: ST) -> ST: ...
 
-class SuppressMissing(Generic[T]):
-    obj: T
-    missing: Callable[[T, Any], Any]
-    def __init__(self, obj: Type[T]) -> None: ...
+class SuppressMissing(Generic[MT]):
+    obj: MT
+    missing: Callable[[MT, Any], Any]
+    def __init__(self, obj: Type[MT]) -> None: ...
     def __enter__(self) -> None: ...
     def __exit__(
         self,
