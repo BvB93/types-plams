@@ -23,13 +23,11 @@ else:
 
 KT = TypeVar("KT")
 VT = TypeVar("VT")
-KT_contra = TypeVar("KT_contra", contravariant=True)
-T_co = TypeVar("T_co", covariant=True)
-MT = TypeVar("MT", bound=SupportsMissing[Any, Any])
+MT = TypeVar("MT", bound=SupportsMissing)
 ST = TypeVar("ST", bound=Settings[Any, Any])
 
-class SupportsMissing(Protocol[KT_contra, T_co]):
-    def __missing__(self, __key: KT_contra) -> T_co: ...
+class SupportsMissing(Protocol):
+    def __missing__(self, __key: Any) -> Any: ...
 
 class Settings(Dict[KT, VT]):
     def copy(self: ST) -> ST: ...
