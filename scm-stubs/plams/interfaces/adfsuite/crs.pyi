@@ -12,6 +12,8 @@ else:
     from typing_extensions import Literal
 
 class CRSResults(SCMResults):
+    job: CRSJob
+    def __init__(self, job: CRSJob) -> None: ...
     @property
     def section(self) -> str: ...
     def get_energy(
