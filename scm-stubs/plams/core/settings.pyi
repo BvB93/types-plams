@@ -21,13 +21,15 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Protocol
 
-class SupportsMissing(Protocol):
-    def __missing__(self, __key: Any) -> Any: ...
-
 KT = TypeVar("KT")
 VT = TypeVar("VT")
-MT = TypeVar("MT", bound=SupportsMissing)
+KT_contra = TypeVar("KT_contra", contravariant=True)
+T_co = TypeVar("T_co", covariant=True)
+MT = TypeVar("MT", bound=SupportsMissing[Any, Any])
 ST = TypeVar("ST", bound=Settings[Any, Any])
+
+class SupportsMissing(Protocol[KT_contra, T_co]):
+    def __missing__(self, __key: KT_contra) -> T_co: ...
 
 class Settings(Dict[KT, VT]):
     def copy(self: ST) -> ST: ...
@@ -46,7 +48,7 @@ class Settings(Dict[KT, VT]):
     ) -> None: ...
     def flatten(self, flatten_list: bool = ...) -> Settings[Tuple[Any, ...], Any]: ...
     def unflatten(self, unflatten_list: bool = ...) -> Settings[Any, Any]: ...
-    @classmethod
+    @classmethod  # type: ignore[override]
     @overload
     def fromkeys(cls, __iterable: Iterable[KT]) -> Settings[KT, Any]: ...
     @classmethod
@@ -66,7 +68,15 @@ class Settings(Dict[KT, VT]):
 
 class SuppressMissing(Generic[MT]):
     obj: MT
-    missing: Callable[[MT, Any], Any]
+    @property
+    def missing(
+        self: SuppressMissing[SupportsMissing[KT_contra, T_co]]
+    ) -> Callable[[MT, KT_contra], T_co]: ...
+    @missing.setter
+    def missing(
+        self: SuppressMissing[SupportsMissing[KT_contra, T_co]],
+        value: Callable[[MT, KT_contra], T_co],
+    ) -> None: ...
     def __init__(self, obj: Type[MT]) -> None: ...
     def __enter__(self) -> None: ...
     def __exit__(

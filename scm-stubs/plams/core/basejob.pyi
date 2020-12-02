@@ -20,8 +20,9 @@ class Job(metaclass=ABCMeta):
     results: Results
     status: str
     name: str
-    jobmanager: None
-    parent: None
+    path: Optional[str]
+    jobmanager: Optional[JobManager]
+    parent: Optional[MultiJob[Any]]
     settings: Settings[str, Any]
     default_settings: List[Settings[str, Any]]
     depend: List[Job]

@@ -69,6 +69,7 @@ class AMSResults(Results):
     def name(self) -> str: ...
 
 class AMSJob(SingleJob):
+    results: AMSResults
     def run(
         self,
         jobrunner: Optional[JobRunner[Any]] = ...,

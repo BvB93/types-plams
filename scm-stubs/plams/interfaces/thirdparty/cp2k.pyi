@@ -37,6 +37,7 @@ class Cp2kResults(Results):
     def get_multigrid_info(self) -> MultigridDict: ...
 
 class Cp2kJob(SingleJob):
+    results: Cp2kResults
     def __init__(
         self,
         copy: Union[None, str, PathLike[str], List[Union[str, PathLike[str]]]] = ...,

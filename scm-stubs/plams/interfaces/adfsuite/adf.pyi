@@ -38,6 +38,7 @@ class ADFResults(SCMResults):
     def recreate_settings(self) -> None: ...
 
 class ADFJob(SCMJob):
+    results: ADFResults
     def run(
         self,
         jobrunner: Optional[JobRunner[Any]] = ...,
