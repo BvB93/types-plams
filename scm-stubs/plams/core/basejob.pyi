@@ -14,13 +14,13 @@ from abc import ABCMeta, abstractmethod
 
 from scm.plams import Results, Settings, JobRunner, JobManager, Molecule
 
-JT = TypeVar("JT", bound=Job)
+JT = TypeVar("JT", bound=SingleJob)
 
 class Job(metaclass=ABCMeta):
     results: Results
     status: str
     name: str
-    path: Optional[str]
+    path: str
     jobmanager: Optional[JobManager]
     parent: Optional[MultiJob[Any]]
     settings: Settings[str, Any]
