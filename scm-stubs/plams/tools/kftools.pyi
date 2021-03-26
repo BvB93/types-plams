@@ -38,7 +38,7 @@ class KFReader(Generic[PT]):
 class KFFile:
     autosave: bool
     path: str
-    tmpdat: Dict[str, Dict[str, Any]]
+    tmpdata: Dict[str, Dict[str, Any]]
     reader: Optional[KFReader[str]]
     def __init__(
         self, path: Union[str, PathLike[str]], autosave: bool = ...
