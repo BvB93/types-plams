@@ -7,3 +7,16 @@ skip_magic_trailing_comma = true
 profile = "black"
 combine_as_imports = true
 line_length = 130
+
+[tool.mypy]
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "numpy.*",
+    "pandas.*",
+    "ase.*",
+    "rdkit.*",
+    "matplotlib.*",
+]
+ignore_missing_imports = true

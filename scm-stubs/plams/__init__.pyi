@@ -1,5 +1,3 @@
-from typing import List
-
 from scm.plams.core.basejob import Job as Job, MultiJob as MultiJob, SingleJob as SingleJob
 from scm.plams.core.errors import (
     FileError as FileError,
@@ -74,5 +72,4 @@ from scm.plams.tools.periodictable import PT as PT, PeriodicTable as PeriodicTab
 from scm.plams.tools.units import Units as Units
 
 __all__: list[str]
-__version__: float
-__path__: list[str]
+__version__: str
