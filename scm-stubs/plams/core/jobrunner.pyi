@@ -1,67 +1,49 @@
 import sys
-from typing import Optional, TypeVar, Generic, ClassVar, List, type_check_only, Any, overload, Union
-from threading import BoundedSemaphore
+import threading
+from typing import Any, ClassVar, Generic, TypeVar, overload
 
 from scm.plams import Settings
 
 if sys.version_info >= (3, 8):
-    from typing import Literal
+    from typing import Literal as L
 else:
-    from typing_extensions import Literal
+    from typing_extensions import Literal as L
 
-BST = TypeVar("BST", None, BoundedSemaphore)
-@type_check_only
+_BST = TypeVar("_BST", None, threading.BoundedSemaphore)
+
 class _MetaRunner(type): ...
 
-class JobRunner(Generic[BST], metaclass=_MetaRunner):
+class JobRunner(Generic[_BST], metaclass=_MetaRunner):
     parallel: bool
-    semaphore: Optional[BoundedSemaphore]
+    semaphore: None | threading.BoundedSemaphore
     @overload
-    def __new__(  # type: ignore[misc]
-        cls, parallel: bool = ..., maxjobs: Literal[0] = ...
-    ) -> JobRunner[None]: ...
+    def __new__(cls, parallel: bool = ..., maxjobs: L[0] = ...) -> JobRunner[None]: ...  # type: ignore[misc]
     @overload
-    def __new__(
-        cls, parallel: bool = ..., maxjobs: int = ...
-    ) -> JobRunner[BoundedSemaphore]: ...
-    def call(
-        self,
-        runscript: str,
-        workdir: str,
-        out: str,
-        err: str,
-        runflags: Settings[str, Any],
-    ) -> int: ...
+    def __new__(cls, parallel: bool = ..., maxjobs: int = ...) -> JobRunner[threading.BoundedSemaphore]: ...
+    def call(self, runscript: str, workdir: str, out: str, err: str, runflags: Settings[str, Any]) -> int: ...
 
-class GridRunner(JobRunner[BST]):
+class GridRunner(JobRunner[_BST]):
     config: ClassVar[Settings[str, Any]] = ...
     sleepstep: int
     settings: Settings[str, Settings[str, Any]]
-    def __slurm_get_jobid(self, output: str) -> Optional[str]: ...
-    def __slurm_running(self, output: str) -> List[str]: ...
-    def __pbs_get_jobid(self, output: str) -> Optional[str]: ...
-    def __pbs_running(self, output: str) -> List[str]: ...
+    def __slurm_get_jobid(self, output: str) -> None | str: ...
+    def __slurm_running(self, output: str) -> list[str]: ...
+    def __pbs_get_jobid(self, output: str) -> None | str: ...
+    def __pbs_running(self, output: str) -> list[str]: ...
     @overload
     def __new__(  # type: ignore[misc]
         cls,
-        grid: Union[Settings[str, Any], Literal["auto", "pbs", "slurm"]] = ...,
+        grid: Settings[str, Any] | L["auto", "pbs", "slurm"] = ...,
         sleepstep: int = ...,
         parallel: bool = ...,
-        maxjobs: Literal[0] = ...
+        maxjobs: L[0] = ...,
     ) -> GridRunner[None]: ...
     @overload
     def __new__(
         cls,
-        grid: Union[Settings[str, Any], Literal["auto", "pbs", "slurm"]] = ...,
+        grid: Settings[str, Any] | L["auto", "pbs", "slurm"] = ...,
         sleepstep: int = ...,
         parallel: bool = ...,
-        maxjobs: int = ...
-    ) -> GridRunner[BoundedSemaphore]: ...
-    def call(
-        self,
-        runscript: str,
-        workdir: str,
-        out: str,
-        err: str,
-        runflags: Settings[str, Any],
-    ) -> int: ...
+        maxjobs: int = ...,
+    ) -> GridRunner[threading.BoundedSemaphore]: ...
+    def call(self, runscript: str, workdir: str, out: str, err: str, runflags: Settings[str, Any]) -> int: ...

@@ -1,36 +1,25 @@
-from typing import (
-    Any,
-    Optional,
-    List,
-    Generic,
-    Iterable,
-    Tuple,
-    Mapping,
-    Iterator,
-    Sequence,
-    Union,
-    SupportsFloat,
-)
-from scm.plams import Bond, Molecule, Settings
+from collections.abc import Iterable, Iterator, Mapping, Sequence
+from typing import Any, SupportsFloat
 
 import numpy as np
+from scm.plams import Bond, Molecule, Settings
 
 class Atom:
     atnum: int
     mol: Molecule
-    bonds: List[Bond]
+    bonds: list[Bond]
     properties: Settings[Any, Any]
-    coords: Tuple[float, float, float]
+    coords: tuple[float, float, float]
     id: int  # Only available after calling `Molecule.set_atoms_id`
     def __init__(
         self,
         atnum: int = ...,
-        symbol: Optional[str] = ...,
-        coords: Optional[Iterable[Union[str, bytes, SupportsFloat]]] = ...,
+        symbol: None | str = ...,
+        coords: None | Iterable[str | bytes | SupportsFloat] = ...,
         unit: str = ...,
-        bonds: Optional[List[Bond]] = ...,
-        mol: Optional[Molecule] = ...,
-        **other: Any
+        bonds: None | list[Bond] = ...,
+        mol: None | Molecule = ...,
+        **other: Any,
     ) -> None: ...
     def __iter__(self) -> Iterator[float]: ...
     @property
@@ -61,12 +50,8 @@ class Atom:
     def is_electronegative(self) -> int: ...
     def translate(self, vector: Iterable[float], unit: str = ...) -> None: ...
     def move_to(self, point: Iterable[float], unit: str = ...) -> None: ...
-    def distance_to(
-        self, point: Iterable[float], unit: str = ..., result_unit: str = ...
-    ) -> Tuple[float, float, float]: ...
-    def vector_to(
-        self, point: Iterable[float], unit: str = ..., result_unit: str = ...
-    ) -> float: ...
+    def distance_to(self, point: Iterable[float], unit: str = ..., result_unit: str = ...) -> tuple[float, float, float]: ...
+    def vector_to(self, point: Iterable[float], unit: str = ..., result_unit: str = ...) -> float: ...
     def angle(
         self,
         point1: Iterable[float],
@@ -75,5 +60,5 @@ class Atom:
         point2unit: str = ...,
         result_unit: str = ...,
     ) -> str: ...
-    def rotate(self, matrix: Union[np.ndarray, Sequence[Sequence[float]]]) -> None: ...
-    def neighbors(self) -> List[Atom]: ...
+    def rotate(self, matrix: np.ndarray | Sequence[Sequence[float]]) -> None: ...
+    def neighbors(self) -> list[Atom]: ...

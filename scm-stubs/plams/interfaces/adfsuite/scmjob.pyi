@@ -1,11 +1,12 @@
-from os import PathLike
-from typing import TypeVar, Union, Dict, Collection, Type, Optional, List, Any
+import os
+from collections.abc import Collection
+from typing import Any, TypeVar
 
 import numpy as np
-from scm.plams import Job, KFFile, SingleJob, Results, Molecule, Settings
+from scm.plams import Job, KFFile, Molecule, Results, Settings, SingleJob
 
-CT = TypeVar("CT", bound=Collection[Any])
-JT = TypeVar("JT", bound=SCMJob)
+_CT = TypeVar("_CT", bound=Collection[Any])
+_JT = TypeVar("_JT", bound=SCMJob)
 
 class SCMResults(Results):
     job: SCMJob
@@ -14,17 +15,10 @@ class SCMResults(Results):
     def collect(self) -> None: ...
     def refresh(self) -> None: ...
     def readkf(self, section: str, variable: str) -> Any: ...
-    def newkf(self, filename: Union[str, PathLike[str]]) -> KFFile: ...
-    def get_properties(self) -> Dict[str, Any]: ...
-    def get_molecule(
-        self,
-        section: str,
-        variable: str,
-        unit: str = ...,
-        internal: bool = ...,
-        n: int = ...,
-    ) -> Molecule: ...
-    def to_input_order(self, data: CT) -> CT: ...
+    def newkf(self, filename: str | os.PathLike[str]) -> KFFile: ...
+    def get_properties(self) -> dict[str, Any]: ...
+    def get_molecule(self, section: str, variable: str, unit: str = ..., internal: bool = ..., n: int = ...) -> Molecule: ...
+    def to_input_order(self, data: _CT) -> _CT: ...
     def readarray(self, section: str, subsection: str, **kwargs: Any) -> np.ndarray: ...
 
 class SCMJob(SingleJob):
@@ -35,12 +29,12 @@ class SCMJob(SingleJob):
     def hash_input(self) -> str: ...
     @classmethod
     def from_inputfile(
-        cls: Type[JT],
-        filename: Union[str, PathLike[str]],
+        cls: type[_JT],
+        filename: str | os.PathLike[str],
         heredoc_delimit: str = ...,
         *,
         name: str = ...,
-        depend: Optional[List[Job]] = ...,
-    ) -> JT: ...
+        depend: None | list[Job] = ...,
+    ) -> _JT: ...
     @staticmethod
     def settings_to_mol(s: Settings[str, Any]) -> None: ...

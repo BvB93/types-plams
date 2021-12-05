@@ -1,43 +1,21 @@
 import sys
-from typing import Dict, overload, Iterable, Union, Any, TypeVar
+from collections.abc import Iterable
+from typing import Any, TypeVar, overload
 
 import numpy as np
 
 if sys.version_info >= (3, 8):
-    from typing import Literal, TypedDict
+    from typing import Literal as L, TypedDict
 else:
-    from typing_extensions import Literal, TypedDict
+    from typing_extensions import Literal as L, TypedDict
 
-Constants = Literal[
-    "Bohr_radius",
-    "Avogadro_constant",
-    "NA",
-    "speed_of_light",
-    "c",
-    "electron_charge",
-    "e",
-    "Boltzmann",
-    "k_B",
-]
-Distance = Literal["A", "Angstrom", "Bohr", "a.u.", "au", "nm", "pm", "m"]
-Energy = Literal[
-    "au", "a.u.", "Hartree", "Ha", "eV", "kJ/mol", "J", "kcal/mol", "cm^-1", "cm-1", "K"
-]
-Angle = Literal["degree", "deg", "radian", "rad", "grad", "circle"]
-Dipole = Literal["au", "a.u.", "Cm", "Debye", "D"]
-RecDistance = Literal[
-    "1/A",
-    "1/Ang",
-    "1/Angstrom",
-    "A^-1",
-    "Ang^-1",
-    "Angstrom^-1",
-    "1/m",
-    "m^-1",
-    "1/Bohr",
-    "Bohr^-1",
-]
-Forces = Literal[
+_ConstantsKinds = L["Bohr_radius", "Avogadro_constant", "NA", "speed_of_light", "c", "electron_charge", "e", "Boltzmann", "k_B",]
+_DistanceKinds = L["A", "Angstrom", "Bohr", "a.u.", "au", "nm", "pm", "m"]
+_EnergyKinds = L["au", "a.u.", "Hartree", "Ha", "eV", "kJ/mol", "J", "kcal/mol", "cm^-1", "cm-1", "K"]
+_AngleKinds = L["degree", "deg", "radian", "rad", "grad", "circle"]
+_DipoleKinds = L["au", "a.u.", "Cm", "Debye", "D"]
+_RecDistanceKinds = L["1/A", "1/Ang", "1/Angstrom", "A^-1", "Ang^-1", "Angstrom^-1", "1/m", "m^-1", "1/Bohr", "Bohr^-1",]
+_ForcesKinds = L[
     "au/Angstrom",
     "au/Ang",
     "au/A",
@@ -118,7 +96,7 @@ Forces = Literal[
     "au",
     "a.u.",
 ]
-Hessian = Literal[
+_HessianKinds = L[
     "au/Angstrom^2",
     "au/Ang^2",
     "au/A^2",
@@ -199,7 +177,7 @@ Hessian = Literal[
     "au",
     "a.u.",
 ]
-Stress = Literal[
+_StressKinds = L[
     "au/Angstrom^3",
     "au/Ang^3",
     "au/A^3",
@@ -285,37 +263,37 @@ Stress = Literal[
     "atm",
 ]
 
-Dicts = TypedDict(
-    "Dicts",
+_UnitsDicts = TypedDict(
+    "_UnitsDicts",
     {
-        "distance": Dict[Distance, float],
-        "energy": Dict[Energy, float],
-        "angle": Dict[Angle, float],
-        "dipole": Dict[Dipole, float],
-        "reciprocal distance": Dict[RecDistance, float],
-        "forces": Dict[Forces, float],
-        "hessian": Dict[Hessian, float],
-        "stress": Dict[Stress, float],
+        "distance": dict[_DistanceKinds, float],
+        "energy": dict[_EnergyKinds, float],
+        "angle": dict[_AngleKinds, float],
+        "dipole": dict[_DipoleKinds, float],
+        "reciprocal distance": dict[_RecDistanceKinds, float],
+        "forces": dict[_ForcesKinds, float],
+        "hessian": dict[_HessianKinds, float],
+        "stress": dict[_StressKinds, float],
     },
 )
 
-ST = TypeVar("ST", bound=str)
-T = TypeVar("T", bound=Union[float, np.generic, None, str, Iterable[Any]])
+_T = TypeVar("_T")
+_ST = TypeVar("_ST", bound=str)
 
 class Units:
-    constants: Dict[Constants, float]
-    distance: Dict[Distance, float]
-    energy: Dict[Energy, float]
-    angle: Dict[Angle, float]
-    dipole: Dict[Dipole, float]
-    rec_distance: Dict[RecDistance, float]
-    forces: Dict[Forces, float]
-    hessian: Dict[Hessian, float]
-    stress: Dict[Stress, float]
-    dicts: Dicts
+    constants: dict[_ConstantsKinds, float]
+    distance: dict[_DistanceKinds, float]
+    energy: dict[_EnergyKinds, float]
+    angle: dict[_AngleKinds, float]
+    dipole: dict[_DipoleKinds, float]
+    rec_distance: dict[_RecDistanceKinds, float]
+    forces: dict[_ForcesKinds, float]
+    hessian: dict[_HessianKinds, float]
+    stress: dict[_StressKinds, float]
+    dicts: _UnitsDicts
     @classmethod
-    def find_unit(cls, unit: ST) -> Dict[str, ST]: ...
+    def find_unit(cls, unit: _ST) -> dict[str, _ST]: ...
     @classmethod
     def conversion_ratio(cls, inp: str, out: str) -> float: ...
     @classmethod
-    def convert(cls, value: T, inp: str, out: str) -> T: ...
+    def convert(cls, value: _T, inp: str, out: str) -> _T: ...

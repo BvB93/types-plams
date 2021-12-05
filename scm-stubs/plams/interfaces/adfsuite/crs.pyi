@@ -1,55 +1,45 @@
 import sys
-from typing import Optional, Union, Sequence, Any, Dict, Set, overload
+from collections.abc import Sequence
+from typing import Any, overload
 
-import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.pyplot import Figure
-from scm.plams import SCMJob, SCMResults, JobRunner, JobManager
+import pandas as pd
+from scm.plams import JobManager, JobRunner, SCMJob, SCMResults
 
 if sys.version_info >= (3, 8):
-    from typing import Literal
+    from typing import Literal as L
 else:
-    from typing_extensions import Literal
+    from typing_extensions import Literal as L
 
 class CRSResults(SCMResults):
     job: CRSJob
     def __init__(self, job: CRSJob) -> None: ...
     @property
     def section(self) -> str: ...
-    def get_energy(
-        self, energy_type: str = ..., compound_idx: int = ..., unit: str = ...
-    ) -> float: ...
+    def get_energy(self, energy_type: str = ..., compound_idx: int = ..., unit: str = ...) -> float: ...
     def get_activity_coefficient(self, compound_idx: int = ...) -> float: ...
     @overload
-    def get_sigma_profile(
-        self, subsection: str = ..., unit: str = ..., as_df: Literal[False] = False
-    ) -> Dict[str, np.ndarray]: ...
+    def get_sigma_profile(self, subsection: str = ..., unit: str = ..., *, as_df: L[False] = ...) -> dict[str, np.ndarray]: ...
     @overload
-    def get_sigma_profile(self, subsection: str = ..., unit: str = ..., as_df: Literal[True] = False) -> pd.DataFrame: ...  # type: ignore[assignment]
+    def get_sigma_profile(self, subsection: str = ..., unit: str = ..., *, as_df: L[True]) -> pd.DataFrame: ...
     @overload
-    def get_sigma_potential(
-        self, subsection: str = ..., unit: str = ..., as_df: Literal[False] = False
-    ) -> Dict[str, np.ndarray]: ...
+    def get_sigma_potential(self, subsection: str = ..., unit: str = ..., *, as_df: L[False] = ...) -> dict[str, np.ndarray]: ...
     @overload
-    def get_sigma_potential(self, subsection: str = ..., unit: str = ..., as_df: Literal[True] = False) -> pd.DataFrame: ...  # type: ignore[assignment]
-    def get_prop_names(self, section: Optional[str] = ...) -> Set[str]: ...
-    def get_results(self, section: Optional[str] = ...) -> Dict[str, Any]: ...
+    def get_sigma_potential(self, subsection: str = ..., unit: str = ..., *, as_df: L[True]) -> pd.DataFrame: ...
+    def get_prop_names(self, section: None | str = ...) -> set[str]: ...
+    def get_results(self, section: None | str = ...) -> dict[str, Any]: ...
     def plot(
         self,
         *arrays: np.ndarray,
-        x_axis: Union[None, str, Sequence[Any], np.ndarray] = ...,
+        x_axis: None | str | Sequence[Any] | np.ndarray = ...,
         plot_fig: bool = ...,
-        x_label: Optional[str] = ...,
-        y_label: Optional[str] = ...,
-    ) -> Figure: ...
+        x_label: None | str = ...,
+        y_label: None | str = ...,
+    ) -> plt.Figure: ...
 
 class CRSJob(SCMJob):
     results: CRSResults
-    def run(
-        self,
-        jobrunner: Optional[JobRunner[Any]] = ...,
-        jobmanager: Optional[JobManager] = ...,
-        **kwargs: Any,
-    ) -> CRSResults: ...
+    def run(self, jobrunner: None | JobRunner[Any] = ..., jobmanager: None | JobManager = ..., **kwargs: Any) -> CRSResults: ...
     @staticmethod
     def cos_to_coskf(filename: str) -> str: ...

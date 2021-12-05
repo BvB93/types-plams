@@ -1,23 +1,20 @@
-from typing import Union, Any, List, Dict
-from os import PathLike
+import os
+from typing import Any
 
-from scm.plams import Settings, Job
+from scm.plams import Job, Settings
 
 class JobManager:
     settings: Settings[str, Any]
-    jobs: List[Any]
-    names: Dict[str, int]
-    hashes: Dict[str, Any]
+    jobs: list[Any]
+    names: dict[str, int]
+    hashes: dict[str, Any]
     path: str
     foldername: str
     workdir: str
     logfile: str
     input: str
     def __init__(
-        self,
-        settings: Settings[str, Any],
-        path: Union[None, str, PathLike[str]] = ...,
-        folder: Union[None, str, PathLike[str]] = ...,
+        self, settings: Settings[str, Any], path: None | str | os.PathLike[str] = ..., folder: None | str | os.PathLike[str] = ...
     ) -> None: ...
-    def load_job(self, filename: Union[str, PathLike[str]]) -> Any: ...
+    def load_job(self, filename: str | os.PathLike[str]) -> Any: ...
     def remove_job(self, job: Job) -> None: ...
