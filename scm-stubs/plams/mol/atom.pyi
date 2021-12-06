@@ -1,42 +1,32 @@
-from typing import (
-    Any,
-    Optional,
-    List,
-    Generic,
-    Iterable,
-    Tuple,
-    Mapping,
-    Iterator,
-    Sequence,
-    Union,
-    SupportsFloat,
-)
-from scm.plams import Bond, Molecule, Settings
+import builtins
+from collections.abc import Iterable, Iterator, Mapping, Sequence
+from typing import Any, SupportsFloat
 
 import numpy as np
+from scm.plams import Bond, Molecule, Settings
 
 class Atom:
     atnum: int
     mol: Molecule
-    bonds: List[Bond]
+    bonds: list[Bond]
     properties: Settings[Any, Any]
-    coords: Tuple[float, float, float]
+    coords: tuple[float, float, float]
     id: int  # Only available after calling `Molecule.set_atoms_id`
     def __init__(
         self,
         atnum: int = ...,
-        symbol: Optional[str] = ...,
-        coords: Optional[Iterable[Union[str, bytes, SupportsFloat]]] = ...,
-        unit: str = ...,
-        bonds: Optional[List[Bond]] = ...,
-        mol: Optional[Molecule] = ...,
-        **other: Any
+        symbol: None | builtins.str = ...,
+        coords: None | Iterable[builtins.str | bytes | SupportsFloat] = ...,
+        unit: builtins.str = ...,
+        bonds: None | list[Bond] = ...,
+        mol: None | Molecule = ...,
+        **other: Any,
     ) -> None: ...
     def __iter__(self) -> Iterator[float]: ...
     @property
-    def symbol(self) -> str: ...
+    def symbol(self) -> builtins.str: ...
     @symbol.setter
-    def symbol(self, symbol: str) -> None: ...
+    def symbol(self, symbol: builtins.str) -> None: ...
     @property
     def x(self) -> float: ...
     @x.setter
@@ -59,21 +49,28 @@ class Atom:
     def is_metallic(self) -> int: ...
     @property
     def is_electronegative(self) -> int: ...
-    def translate(self, vector: Iterable[float], unit: str = ...) -> None: ...
-    def move_to(self, point: Iterable[float], unit: str = ...) -> None: ...
+    def str(
+        self,
+        symbol: bool,
+        suffix: str = ...,
+        suffix_dict: Mapping[str, Any] = ...,
+        unit: str = ...,
+        space: int = ...,
+        decimal: int = ...,
+    ) -> str: ...
+    def translate(self, vector: Iterable[float], unit: builtins.str = ...) -> None: ...
+    def move_to(self, point: Iterable[float], unit: builtins.str = ...) -> None: ...
     def distance_to(
-        self, point: Iterable[float], unit: str = ..., result_unit: str = ...
-    ) -> Tuple[float, float, float]: ...
-    def vector_to(
-        self, point: Iterable[float], unit: str = ..., result_unit: str = ...
-    ) -> float: ...
+        self, point: Iterable[float], unit: builtins.str = ..., result_unit: builtins.str = ...
+    ) -> tuple[float, float, float]: ...
+    def vector_to(self, point: Iterable[float], unit: builtins.str = ..., result_unit: builtins.str = ...) -> float: ...
     def angle(
         self,
         point1: Iterable[float],
         point2: Iterable[float],
-        point1unit: str = ...,
-        point2unit: str = ...,
-        result_unit: str = ...,
-    ) -> str: ...
-    def rotate(self, matrix: Union[np.ndarray, Sequence[Sequence[float]]]) -> None: ...
-    def neighbors(self) -> List[Atom]: ...
+        point1unit: builtins.str = ...,
+        point2unit: builtins.str = ...,
+        result_unit: builtins.str = ...,
+    ) -> builtins.str: ...
+    def rotate(self, matrix: np.ndarray | Sequence[Sequence[float]]) -> None: ...
+    def neighbors(self) -> list[Atom]: ...

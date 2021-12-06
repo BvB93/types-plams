@@ -1,5 +1,5 @@
-from scm.plams import Molecule
 from ase import Atoms
+from scm.plams import Molecule
 
 def toASE(molecule: Molecule) -> Atoms: ...
 def fromASE(molecule: Atoms) -> Molecule: ...

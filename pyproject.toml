@@ -1,0 +1,22 @@
+[tool.black]
+line_length = 130
+target_version = ["py36"]
+skip_magic_trailing_comma = true
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+line_length = 130
+
+[tool.mypy]
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    "numpy.*",
+    "pandas.*",
+    "ase.*",
+    "rdkit.*",
+    "matplotlib.*",
+]
+ignore_missing_imports = true

@@ -1,91 +1,90 @@
-from os import PathLike
-from typing import (
-    List,
-    Union,
-    Optional,
-    Any,
-    Collection,
-    TypeVar,
-    Generic,
-    Generator,
-    Iterator,
-)
-from abc import ABCMeta, abstractmethod
+import abc
+import os
+import threading
+from collections.abc import Collection, Generator, Iterator
+from typing import Any, Generic, TypeVar
 
-from scm.plams import Results, Settings, JobRunner, JobManager, Molecule
+from scm.plams import JobManager, JobRunner, Molecule, Results, Settings
 
 JT = TypeVar("JT", bound=SingleJob)
 
-class Job(metaclass=ABCMeta):
+class Job(metaclass=abc.ABCMeta):
     results: Results
     status: str
     name: str
     path: str
-    jobmanager: Optional[JobManager]
-    parent: Optional[MultiJob[Any]]
+    jobmanager: None | JobManager
+    parent: None | MultiJob[Any]
     settings: Settings[str, Any]
-    default_settings: List[Settings[str, Any]]
-    depend: List[Job]
+    default_settings: list[Settings[str, Any]]
+    depend: list[Job]
+    _dont_pickle: list[str]
     def __init__(
-        self,
-        name: str = ...,
-        settings: Union[None, Settings[str, Any], Job] = ...,
-        depend: Optional[List[Job]] = ...,
+        self, name: str = ..., settings: None | Settings[str, Any] | Job = ..., depend: None | list[Job] = ...
     ) -> None: ...
-    def run(
-        self,
-        jobrunner: Optional[JobRunner[Any]] = ...,
-        jobmanager: Optional[JobManager] = ...,
-        **kwargs: Any,
-    ) -> Results: ...
-    def pickle(self, filename: Union[None, str, PathLike[str]] = ...) -> None: ...
+    def run(self, jobrunner: None | JobRunner[Any] = ..., jobmanager: None | JobManager = ..., **kwargs: Any) -> Results: ...
+    def pickle(self, filename: None | str | os.PathLike[str] = ...) -> None: ...
     def ok(self, strict: bool = ...) -> bool: ...
-    @abstractmethod
+    @abc.abstractmethod
     def check(self) -> bool: ...
-    @abstractmethod
-    def hash(self) -> Optional[str]: ...
+    @abc.abstractmethod
+    def hash(self) -> None | str: ...
     def prerun(self) -> None: ...
     def postrun(self) -> None: ...
+    def _prepare(self, jobmanager: JobManager) -> bool: ...
+    @abc.abstractmethod
+    def _get_ready(self) -> None: ...
+    @abc.abstractmethod
+    def _execute(self, jobrunner: JobRunner[Any]) -> None: ...
+    def _finalize(self) -> None: ...
+    def _log_status(self) -> None: ...
+    def _full_name(self) -> str: ...
+    def __getstate__(self) -> dict[str, Any]: ...
 
-class SingleJob(Job, metaclass=ABCMeta):
-    molecule: Optional[Molecule]
+class SingleJob(Job, metaclass=abc.ABCMeta):
+    molecule: None | Molecule
     def __init__(
         self,
-        molecule: Optional[Molecule] = ...,
+        molecule: None | Molecule = ...,
         *,
         name: str = ...,
-        settings: Union[None, Settings[str, Any], Job] = ...,
-        depend: Optional[List[Job]] = ...,
+        settings: None | Settings[str, Any] | Job = ...,
+        depend: None | list[Job] = ...,
     ) -> None: ...
-    @abstractmethod
+    @abc.abstractmethod
     def get_input(self) -> Any: ...
-    @abstractmethod
+    @abc.abstractmethod
     def get_runscript(self) -> Any: ...
     def hash_input(self) -> str: ...
     def hash_runscript(self) -> str: ...
     def hash(self) -> str: ...
     def check(self) -> bool: ...
     def full_runscript(self) -> str: ...
+    def _get_ready(self) -> None: ...
+    def _execute(self, jobrunner: JobRunner[Any]) -> None: ...
+    def _filename(self, t: str) -> str: ...
     @classmethod
     def load_external(
         cls,
-        path: Union[str, PathLike[str]],
-        settings: Optional[Settings[str, Any]] = ...,
-        molecule: Optional[Molecule] = ...,
+        path: str | os.PathLike[str],
+        settings: None | Settings[str, Any] = ...,
+        molecule: None | Molecule = ...,
         finalize: bool = ...,
     ) -> Job: ...
 
 class MultiJob(Job, Generic[JT]):
     children: Collection[JT]
-    childrunner: Optional[JobRunner[Any]]
+    childrunner: None | JobRunner[Any]
+    _active_children: int
+    _lock: threading.Lock
     def __init__(
         self,
-        children: Optional[Collection[JT]] = ...,
-        childrunner: Optional[JobRunner[Any]] = ...,
+        children: None | Collection[JT] = ...,
+        childrunner: None | JobRunner[Any] = ...,
         *,
         name: str = ...,
-        settings: Union[None, Settings[str, Any], Job] = ...,
-        depend: Optional[List[Job]] = ...,
+        settings: None | Settings[str, Any] | Job = ...,
+        depend: None | list[Job] = ...,
     ) -> None: ...
     def new_children(self) -> None: ...
     def hash(self) -> None: ...
@@ -93,3 +92,6 @@ class MultiJob(Job, Generic[JT]):
     def other_jobs(self) -> Generator[JT, None, None]: ...
     def remove_child(self, job: JT) -> None: ...
     def __iter__(self) -> Iterator[JT]: ...
+    def _notify(self) -> None: ...
+    def _execute(self, jobrunner: JobRunner[Any]) -> None: ...
+    def _get_ready(self) -> None: ...
