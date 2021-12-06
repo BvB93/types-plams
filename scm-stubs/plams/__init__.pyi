@@ -55,20 +55,28 @@ from scm.plams.interfaces.thirdparty.cp2k import (
 )
 from scm.plams.mol.atom import Atom as Atom
 from scm.plams.mol.bond import Bond as Bond
+from scm.plams.mol.identify import label_atoms as label_atoms
 from scm.plams.mol.molecule import Molecule as Molecule
 from scm.plams.mol.pdbtools import PDBHandler as PDBHandler, PDBRecord as PDBRecord
 from scm.plams.recipes.ams_crs import run_crs_ams as run_crs_ams
 from scm.plams.recipes.global_minimum import global_minimum as global_minimum
+from scm.plams.tools.converters import traj_to_rkf as traj_to_rkf, vasp_output_to_ams as vasp_output_to_ams
 from scm.plams.tools.geometry import (
     angle as angle,
     axis_rotation_matrix as axis_rotation_matrix,
     cell_shape as cell_shape,
+    cellvectors_from_shape as cellvectors_from_shape,
     dihedral as dihedral,
     distance_array as distance_array,
     rotation_matrix as rotation_matrix,
 )
 from scm.plams.tools.kftools import KFFile as KFFile, KFHistory as KFHistory, KFReader as KFReader
 from scm.plams.tools.periodictable import PT as PT, PeriodicTable as PeriodicTable
+from scm.plams.tools.reaction_energies import (
+    balance_equation as balance_equation,
+    get_stoichiometry as get_stoichiometry,
+    reaction_energy as reaction_energy,
+)
 from scm.plams.tools.units import Units as Units
 
 __all__: list[str]

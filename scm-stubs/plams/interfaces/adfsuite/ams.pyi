@@ -1,21 +1,79 @@
 import os
 import sys
-from typing import Any
+from collections.abc import Iterator
+from typing import Any, overload
 
 import numpy as np
 from scm.plams import Job, JobManager, JobRunner, KFFile, Molecule, Results, Settings, SingleJob
 
 if sys.version_info >= (3, 8):
-    from typing import TypedDict
+    from typing import Literal as L, TypedDict
 else:
-    from typing_extensions import TypedDict
+    from typing_extensions import Literal as L, TypedDict
 
 class _TimingsDict(TypedDict):
     elapsed: float
     system: float
     cpu: float
 
+class _PESScanDict(TypedDict):
+    RaveledScanCoords: list[str]
+    nRaveledScanCoords: int
+    ScanCoords: list[list[str]]
+    nScanCoords: int
+    OrigScanCoords: list[str]
+    RaveledPESCoords: list[list[str]]
+    Units: list[list[str]]
+    RaveledUnits: list[str]
+    Converged: list[bool]
+    PES: list[float]
+    nPESPoints: int
+    HistoryIndices: list[int]
+
+class _PESScanDictMol(_PESScanDict):
+    Molecules: list[Molecule]
+
+class _State:
+    engfile: str
+    energy: float
+    molecule: Molecule
+    count: int
+    isTS: bool
+    reactantsID: None | int
+    productsID: None | int
+    def __init__(
+        self,
+        landscape: _EnergyLandscape,
+        engfile: str,
+        energy: float,
+        mol: Molecule,
+        count: int,
+        isTS: bool,
+        reactantsID: None | int = ...,
+        productsID: None | int = ...,
+    ) -> None: ...
+    @property
+    def id(self) -> int: ...
+    @property
+    def reactants(self) -> _State: ...
+    @property
+    def products(self) -> _State: ...
+    def __str__(self) -> str: ...
+
+class _EnergyLandscape:
+    def __init__(self, results: AMSResults) -> None: ...
+    @property
+    def minima(self) -> list[_State]: ...
+    @property
+    def transition_states(self) -> list[_State]: ...
+    def __str__(self) -> str: ...
+    def __getitem__(self, i: int) -> _State: ...
+    def __iter__(self) -> Iterator[_State]: ...
+    def __len__(self) -> int: ...
+    State = _State
+
 class AMSResults(Results):
+    EnergyLandscape = _EnergyLandscape
     rkfs: dict[str, KFFile]
     job: AMSJob
     def __init__(self, job: AMSJob) -> None: ...
@@ -45,12 +103,20 @@ class AMSResults(Results):
     def get_dipolemoment(self, engine: None | str = ...) -> np.ndarray: ...
     def get_dipolegradients(self, engine: None | str = ...) -> np.ndarray: ...
     def get_timings(self) -> _TimingsDict: ...
+    def get_youngmodulus(self, unit: str = ..., engine: None | str = ...) -> float: ...
+    def get_shearmodulus(self, unit: str = ..., engine: None | str = ...) -> float: ...
+    def get_bulkmodulus(self, unit: str = ..., engine: None | str = ...) -> float: ...
+    @overload
+    def get_pesscan_results(self, molecules: L[True] = ...) -> _PESScanDictMol: ...
+    @overload
+    def get_pesscan_results(self, molecules: L[False]) -> _PESScanDict: ...
     def recreate_molecule(self) -> None | Molecule: ...
     def recreate_settings(self) -> None | Settings[str, Any]: ...
     def ok(self) -> bool: ...
     def get_errormsg(self) -> str: ...
     @property
     def name(self) -> str: ...
+    def get_energy_landscape(self) -> _EnergyLandscape: ...
 
 class AMSJob(SingleJob):
     results: AMSResults
@@ -60,9 +126,20 @@ class AMSJob(SingleJob):
     def check(self) -> bool: ...
     def get_errormsg(self) -> str: ...
     def hash_input(self) -> str: ...
+    def get_task(self) -> None | str: ...
+    @classmethod
+    def load_external(
+        cls,
+        path: str | os.PathLike[str],
+        settings: None | Settings[str, Any] = ...,
+        molecule: None | Molecule = ...,
+        finalize: bool = ...,
+    ) -> AMSJob: ...
     @classmethod
     def from_inputfile(
         cls, filename: str | os.PathLike[str], heredoc_delimit: str = ..., *, name: str = ..., depend: None | list[Job] = ...
     ) -> AMSJob: ...
     @staticmethod
     def settings_to_mol(s: Settings[str, Any]) -> dict[str, Molecule]: ...
+    @staticmethod
+    def _slurm_env(settings: Settings[str, Any]) -> str: ...
