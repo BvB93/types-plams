@@ -13,7 +13,7 @@ def find_stubs(package: str) -> "dict[str, list[str]]":
 
 setup(
     name='plams-stubs',
-    version='1.4',
+    version='1.5.1',
     license='LGPLv3',
     python_requires='>=3.6',
     install_requires=[],
