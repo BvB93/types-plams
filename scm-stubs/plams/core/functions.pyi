@@ -11,7 +11,7 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Literal as L
 
-config = Settings[str, Any]
+config: Settings
 
 def init(
     path: None | str | os.PathLike[str] = ...,

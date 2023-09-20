@@ -1,20 +1,15 @@
 from collections.abc import Collection, Iterable, Mapping, Sequence
 from typing import Any, TypeVar
 
-import numpy as np
+import numpy.typing as npt
 from scm.plams import Atom, Bond, Molecule
 
 _MT = TypeVar("_MT", bound="Collection[Atom]")
 
 possible_flags: list[str]
 
-def twist(
-    v1: np.ndarray | Sequence[float],
-    v2: np.ndarray | Sequence[float],
-    v3: np.ndarray | Sequence[float],
-    tolerance: float | None = ...,
-) -> tuple[int, None | int]: ...
-def bend(v1: np.ndarray | Sequence[float], v2: np.ndarray | Sequence[float], tolerance: float | None = ...) -> int: ...
+def twist(v1: npt.ArrayLike, v2: npt.ArrayLike, v3: npt.ArrayLike, tolerance: float | None = ...) -> tuple[int, None | int]: ...
+def bend(v1: npt.ArrayLike, v2: npt.ArrayLike, tolerance: float | None = ...) -> int: ...
 def unique_atoms(atomlist: Collection[Atom]) -> list[Atom]: ...
 def initialize(molecule: Iterable[Atom]) -> None: ...
 def clear(molecule: Iterable[Atom]) -> None: ...

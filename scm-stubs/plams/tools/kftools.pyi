@@ -3,7 +3,7 @@ import sys
 from collections.abc import Generator, Sequence
 from typing import Any, Generic, TypeVar, overload
 
-import numpy as np
+import numpy.typing as npt
 
 if sys.version_info >= (3, 8):
     from typing import Literal as L
@@ -55,7 +55,7 @@ class KFHistory(Generic[_PT, _ST]):
     blocked: set[str]
     nblocks: int
     def __init__(self, kf: KFReader[_PT], section: _ST) -> None: ...
-    def read_all(self, name: str) -> np.ndarray: ...
+    def read_all(self, name: str) -> npt.NDArray[Any]: ...
     def iter(self, name: str) -> Generator[Any, None, None]: ...
     @overload
     def iter_optional(self, name: str, default: None = ...) -> Generator[Any | None, None, None]: ...

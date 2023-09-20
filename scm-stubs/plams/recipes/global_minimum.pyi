@@ -20,6 +20,6 @@ def global_minimum(
     path: None | str | os.PathLike[str] = ...,
     *,
     name: str = ...,
-    settings: None | Settings[str, Any] | Job = ...,
+    settings: None | Settings | Job = ...,
     depend: None | list[Job] = ...,
 ) -> Molecule: ...

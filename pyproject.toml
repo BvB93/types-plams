@@ -1,3 +1,9 @@
+[build-system]
+requires = [
+    "setuptools",
+]
+build-backend = "setuptools.build_meta"
+
 [tool.black]
 line_length = 130
 target_version = ["py36"]
@@ -7,16 +13,19 @@ skip_magic_trailing_comma = true
 profile = "black"
 combine_as_imports = true
 line_length = 130
+skip = [".git"]
+extra_standard_library = [
+    "typing_extensions",
+    "_typeshed",
+]
 
 [tool.mypy]
 show_error_codes = true
+strict = true
 
 [[tool.mypy.overrides]]
 module = [
-    "numpy.*",
-    "pandas.*",
-    "ase.*",
-    "rdkit.*",
     "matplotlib.*",
+    "ase.*",
 ]
 ignore_missing_imports = true

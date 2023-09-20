@@ -11,8 +11,8 @@ else:
 
 @overload
 def run_crs_ams(
-    settings_ams: Settings[str, Any],
-    settings_crs: Settings[str, Any],
+    settings_ams: Settings,
+    settings_crs: Settings,
     solvents: Molecule | Iterable[Molecule],
     solutes: None | Molecule | Iterable[Molecule] = ...,
     *,
@@ -23,8 +23,8 @@ def run_crs_ams(
 ) -> CRSResults: ...
 @overload
 def run_crs_ams(
-    settings_ams: Settings[str, Any],
-    settings_crs: Settings[str, Any],
+    settings_ams: Settings,
+    settings_crs: Settings,
     solvents: Molecule | Iterable[Molecule],
     solutes: None | Molecule | Iterable[Molecule] = ...,
     *,

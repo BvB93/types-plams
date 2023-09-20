@@ -15,13 +15,11 @@ class Job(metaclass=abc.ABCMeta):
     path: str
     jobmanager: None | JobManager
     parent: None | MultiJob[Any]
-    settings: Settings[str, Any]
-    default_settings: list[Settings[str, Any]]
+    settings: Settings
+    default_settings: list[Settings]
     depend: list[Job]
     _dont_pickle: list[str]
-    def __init__(
-        self, name: str = ..., settings: None | Settings[str, Any] | Job = ..., depend: None | list[Job] = ...
-    ) -> None: ...
+    def __init__(self, name: str = ..., settings: None | Settings | Job = ..., depend: None | list[Job] = ...) -> None: ...
     def run(self, jobrunner: None | JobRunner[Any] = ..., jobmanager: None | JobManager = ..., **kwargs: Any) -> Results: ...
     def pickle(self, filename: None | str | os.PathLike[str] = ...) -> None: ...
     def ok(self, strict: bool = ...) -> bool: ...
@@ -48,7 +46,7 @@ class SingleJob(Job, metaclass=abc.ABCMeta):
         molecule: None | Molecule = ...,
         *,
         name: str = ...,
-        settings: None | Settings[str, Any] | Job = ...,
+        settings: None | Settings | Job = ...,
         depend: None | list[Job] = ...,
     ) -> None: ...
     @abc.abstractmethod
@@ -65,11 +63,7 @@ class SingleJob(Job, metaclass=abc.ABCMeta):
     def _filename(self, t: str) -> str: ...
     @classmethod
     def load_external(
-        cls,
-        path: str | os.PathLike[str],
-        settings: None | Settings[str, Any] = ...,
-        molecule: None | Molecule = ...,
-        finalize: bool = ...,
+        cls, path: str | os.PathLike[str], settings: None | Settings = ..., molecule: None | Molecule = ..., finalize: bool = ...
     ) -> Job: ...
 
 class MultiJob(Job, Generic[JT]):
@@ -83,7 +77,7 @@ class MultiJob(Job, Generic[JT]):
         childrunner: None | JobRunner[Any] = ...,
         *,
         name: str = ...,
-        settings: None | Settings[str, Any] | Job = ...,
+        settings: None | Settings | Job = ...,
         depend: None | list[Job] = ...,
     ) -> None: ...
     def new_children(self) -> None: ...

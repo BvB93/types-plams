@@ -9,12 +9,12 @@ if sys.version_info >= (3, 8):
 else:
     from typing_extensions import Literal as L, TypedDict
 
-_ConstantsKinds = L["Bohr_radius", "Avogadro_constant", "NA", "speed_of_light", "c", "electron_charge", "e", "Boltzmann", "k_B",]
+_ConstantsKinds = L["Bohr_radius", "Avogadro_constant", "NA", "speed_of_light", "c", "electron_charge", "e", "Boltzmann", "k_B"]
 _DistanceKinds = L["A", "Angstrom", "Bohr", "a.u.", "au", "nm", "pm", "m"]
 _EnergyKinds = L["au", "a.u.", "Hartree", "Ha", "eV", "kJ/mol", "J", "kcal/mol", "cm^-1", "cm-1", "K"]
 _AngleKinds = L["degree", "deg", "radian", "rad", "grad", "circle"]
 _DipoleKinds = L["au", "a.u.", "Cm", "Debye", "D"]
-_RecDistanceKinds = L["1/A", "1/Ang", "1/Angstrom", "A^-1", "Ang^-1", "Angstrom^-1", "1/m", "m^-1", "1/Bohr", "Bohr^-1",]
+_RecDistanceKinds = L["1/A", "1/Ang", "1/Angstrom", "A^-1", "Ang^-1", "Angstrom^-1", "1/m", "m^-1", "1/Bohr", "Bohr^-1"]
 _ForcesKinds = L[
     "au/Angstrom",
     "au/Ang",

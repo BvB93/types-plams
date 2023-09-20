@@ -2,14 +2,14 @@ import builtins
 from collections.abc import Iterable, Iterator, Mapping, Sequence
 from typing import Any, SupportsFloat
 
-import numpy as np
+import numpy.typing as npt
 from scm.plams import Bond, Molecule, Settings
 
 class Atom:
     atnum: int
     mol: Molecule
     bonds: list[Bond]
-    properties: Settings[Any, Any]
+    properties: Settings
     coords: tuple[float, float, float]
     id: int  # Only available after calling `Molecule.set_atoms_id`
     def __init__(
@@ -72,5 +72,5 @@ class Atom:
         point2unit: builtins.str = ...,
         result_unit: builtins.str = ...,
     ) -> builtins.str: ...
-    def rotate(self, matrix: np.ndarray | Sequence[Sequence[float]]) -> None: ...
+    def rotate(self, matrix: npt.ArrayLike) -> None: ...
     def neighbors(self) -> list[Atom]: ...

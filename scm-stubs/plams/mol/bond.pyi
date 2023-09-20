@@ -9,7 +9,7 @@ class Bond:
     atom2: Atom
     order: float
     mol: Molecule
-    properties: Settings[Any, Any]
+    properties: Settings
     def __init__(
         self, atom1: None | Atom = ..., atom2: None | Atom = ..., order: float = ..., mol: None | Molecule = ..., **other: Any
     ) -> None: ...
