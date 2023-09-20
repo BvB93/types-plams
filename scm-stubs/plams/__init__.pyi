@@ -26,6 +26,7 @@ from scm.plams.core.results import Results as Results
 from scm.plams.core.settings import Settings as Settings
 from scm.plams.interfaces.adfsuite.adf import ADFJob as ADFJob, ADFResults as ADFResults
 from scm.plams.interfaces.adfsuite.ams import AMSJob as AMSJob, AMSResults as AMSResults
+from scm.plams.interfaces.adfsuite.dftb import DFTBJob as DFTBJob, DFTBResults as DFTBResults
 from scm.plams.interfaces.adfsuite.crs import CRSJob as CRSJob, CRSResults as CRSResults
 from scm.plams.interfaces.adfsuite.scmjob import SCMJob as SCMJob, SCMResults as SCMResults
 from scm.plams.interfaces.molecule.ase import fromASE as fromASE, toASE as toASE
@@ -78,6 +79,14 @@ from scm.plams.tools.reaction_energies import (
     reaction_energy as reaction_energy,
 )
 from scm.plams.tools.units import Units as Units
+
+from scm.plams import (
+    core as core,
+    interfaces as interfaces,
+    mol as mol,
+    recipes as recipes,
+    tools as tools,
+)
 
 __all__: list[str]
 __version__: str
