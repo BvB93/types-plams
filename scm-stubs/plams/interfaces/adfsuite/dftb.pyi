@@ -1,4 +1,4 @@
-from scm.plams import SCMJob, SCMResults, Molecule
+from scm.plams import Molecule, SCMJob, SCMResults
 
 class DFTBResults(SCMResults):
     def get_main_molecule(self) -> Molecule: ...

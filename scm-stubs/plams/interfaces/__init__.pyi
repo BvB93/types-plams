@@ -1,5 +1,1 @@
-from scm.plams.interfaces import (
-    adfsuite as adfsuite,
-    molecule as molecule,
-    thirdparty as thirdparty,
-)
+from scm.plams.interfaces import adfsuite as adfsuite, molecule as molecule, thirdparty as thirdparty

@@ -1,4 +1,1 @@
-from scm.plams.interfaces.molecule import (
-    ase as ase,
-    rdkit as rdkit,
-)
+from scm.plams.interfaces.molecule import ase as ase, rdkit as rdkit
